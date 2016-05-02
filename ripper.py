@@ -1,37 +1,32 @@
 #!/usr/bin/python
 
-# Mechanize
-import mechanize
-import html2text
 import codecs
+import getpass
 import re
-import yaml
 import os
-from ntlm import HTTPNtlmAuthHandler
+
 from bs4 import BeautifulSoup
+import html2text
+import requests
+from requests_ntlm import HttpNtlmAuth
+import yaml
+
 
 def parse_page(url, output):
-    global handled, user, password, scrape_recursively, content_div_id, \
+    global handled, scrape_recursively, content_div_id, \
            sharepoint_url, wiki_base_url, wiki_index, confluence_space_key, \
            empties, has_images, direct_confluence_entry, add_legacy_link
 
+    user = raw_input("domain\\username:")
+    password = getpass.getpass()
+    session = requests.Session()
+    session.auth = HttpNtlmAuth(user, password, session)
 
-    passman = mechanize.HTTPPasswordMgrWithDefaultRealm()
-    passman.add_password(None, url, user, password)
-# create the NTLM authentication handler
-    auth_NTLM = HTTPNtlmAuthHandler.HTTPNtlmAuthHandler(passman)
-
-# create and install the opener
-    browser = mechanize.Browser()
-    browser.add_handler(auth_NTLM)
-
-# Ignore robots.txt
-    browser.set_handle_robots(False)
-# retrieve the result
-    response = browser.open(url)
+    response = session.get(url)
     handled.append(url)
+    html = response.content
 
-    soup = BeautifulSoup(response.read(), "html5lib")
+    soup = BeautifulSoup(html, "html5lib")
     innerDiv = soup.find("div", id=content_div_id)
 
     if innerDiv != None:
@@ -95,7 +90,7 @@ def parse_page(url, output):
         file.close()
 
     else:
-        if response.read() != '':
+        if html != '':
             print 'Failed'
         else:
             print 'Empty'
@@ -106,8 +101,6 @@ def parse_page(url, output):
 config = yaml.load(file("config.yml"))
 url = config['sharepoint_url'] + config['wiki_base_url'] + config['wiki_index']
 # globals
-user = config['username']
-password = config['password']
 scrape_recursively = config['scrape_recursively']
 content_div_id = config['content_div_id']
 sharepoint_url = config['sharepoint_url']

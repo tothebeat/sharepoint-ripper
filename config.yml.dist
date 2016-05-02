@@ -1,5 +1,3 @@
-username: sharepointuser
-password: sharepointpassword
 sharepoint_url: https://sharepoint.example.com
 wiki_base_url: /wiki/
 wiki_index: Home.aspx
