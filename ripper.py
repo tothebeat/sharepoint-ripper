@@ -13,12 +13,10 @@ import yaml
 
 
 def parse_page(url, output):
-    global handled, scrape_recursively, content_div_id, \
+    global user, password, handled, scrape_recursively, content_div_id, \
            sharepoint_url, wiki_base_url, wiki_index, confluence_space_key, \
            empties, has_images, direct_confluence_entry, add_legacy_link
 
-    user = raw_input("domain\\username:")
-    password = getpass.getpass()
     session = requests.Session()
     session.auth = HttpNtlmAuth(user, password, session)
 
@@ -97,6 +95,8 @@ def parse_page(url, output):
             empties.append(url)
     return
 
+user = raw_input("domain\\username: ")
+password = getpass.getpass()
 
 config = yaml.load(file("config.yml"))
 url = config['sharepoint_url'] + config['wiki_base_url'] + config['wiki_index']
