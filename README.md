@@ -17,3 +17,18 @@ Copy `config.yml.dist` to `config.yml` and enter your details
 |confluence_space_key|The key of your Confluence space|
 |direct_confluence_entry|True if you'll copy and paste the resultant markdown straight into the wiki entry option of Confluence. False if you're using the [markdown-to-confluence-uploader](https://github.com/zorfling/markdown-to-confluence-uploader)|
 |add_legacy_link|Whether to add a link to the bottom of each page linking back to the legacy SharePoint source page|
+
+
+## Installation Notes:
+
+If running on Debian/Ubuntu, you may get an InsecurePlatformWarning if using a Python version earlier than 2.7.9. Per [this thread|http://stackoverflow.com/a/29099439] you will need to install additional system packages:
+
+```
+sudo apt-get install python-dev libffi-dev libssl-dev
+```
+
+You will also need to install the following extra packages:
+
+```
+pip install 'requests[security]'
+```
