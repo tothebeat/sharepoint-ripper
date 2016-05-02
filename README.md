@@ -21,7 +21,7 @@ Copy `config.yml.dist` to `config.yml` and enter your details
 
 ## Installation Notes:
 
-If running on Debian/Ubuntu, you may get an InsecurePlatformWarning if using a Python version earlier than 2.7.9. Per [this thread|http://stackoverflow.com/a/29099439] you will need to install additional system packages:
+If running on Debian/Ubuntu, you may get an InsecurePlatformWarning if using a Python version earlier than 2.7.9. Per [this thread](http://stackoverflow.com/a/29099439) you will need to install additional system packages:
 
 ```
 sudo apt-get install python-dev libffi-dev libssl-dev
