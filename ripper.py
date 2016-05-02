@@ -26,7 +26,7 @@ def parse_page(url, output):
     handled.append(url)
     html = response.content
 
-    soup = BeautifulSoup(html, "html5lib")
+    soup = BeautifulSoup(html, "lxml")
     innerDiv = soup.find("div", id=content_div_id)
 
     if innerDiv != None:
